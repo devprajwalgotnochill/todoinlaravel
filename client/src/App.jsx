@@ -1,13 +1,12 @@
-
+import Todo from './components/Todo'
 
 function App() {
 
+  
   return (
-    <>
-      <div>
-        <h1 className=" text-red-400">To do </h1>
-      </div>
-    </>
+    <div className='flex h-screen items-center justify-center'>
+      <Todo />
+    </div>
   )
 }
 
