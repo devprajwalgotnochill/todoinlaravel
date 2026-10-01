@@ -8,12 +8,16 @@ function Todo() {
   function addTodo(e) {
     e.preventDefault();
 
+    if (Text.length < 3) {
+      return;
+    }
+
     setTodo([...Todo, Text]);
     setText("");
   }
 
   return (
-    <div className="text-black border border-black p-4 m-2 flex flex-col gap-4 w-max">
+    <div className=" border border-white p-4 m-2 flex flex-col gap-4 w-max">
       <h2 className="text-center">not to or Todos</h2>
 
       <div className="">
@@ -36,12 +40,9 @@ function Todo() {
       </div>
 
       {Todo.map((todo, index) => (
-        <div key={index} className="border border-black p-2">
+        <div key={index} className="border border-white p-2">
           <span>
-            {index + 1}. {todo} Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Sapiente voluptatum consequatur perferendis cumque
-            qui provident impedit soluta corporis harum laboriosam nemo vitae
-            odit adipisci sunt eum reprehenderit, rerum aspernatur ut.
+            {index + 1}. {todo}
           </span>
         </div>
       ))}
