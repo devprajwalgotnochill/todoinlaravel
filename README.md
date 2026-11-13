@@ -2,17 +2,17 @@
 
 # front end
 
-cd client
-npm install
-npm run dev`
+- cd client
+- npm install
+- npm run dev
 
 # backend
 
-cd server
-composer install
-php artisan key:generate
-php artisan migrate
-php artisan serve
+- cd server
+- composer install
+- php artisan key:generate
+- php artisan migrate
+- php artisan serve
 
 Open http://localhost:5173. The API is available at http://localhost:8000
 
