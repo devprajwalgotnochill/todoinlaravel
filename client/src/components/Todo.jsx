@@ -1,40 +1,66 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getTodos, createTodo, updateTodo, deleteTodo } from "../api/todos";
+
+const API = "http://localhost:8000/api/todos";
+const headers = {
+  "Content-Type": "application/json",
+  Accept: "application/json",
+};
 
 function Todo() {
   const [text, setText] = useState("");
   const [todos, setTodos] = useState([]);
 
-  // Create
-  function addTodo(e) {
-    e.preventDefault();
+  // READ
+  useEffect(() => {
+    getTodos().then(setTodos).catch(console.error);
+  }, []);
 
-    if (text.length < 3) {
-      return;
+  //create
+  async function addTodo(e) {
+    e.preventDefault();
+    if (text.trim().length < 3) {
+      return -1;
     }
 
-    const newTodo = {
-      id: Date.now(), // temporary id, the backend will give a real one later
-      title: text.trim(),
-      completed: false,
-    };
-
-    setTodos([newTodo, ...todos]);
-
-    setText("");
+    try {
+      const created = await createTodo(text.trim());
+      setTodos([created, ...todos]);
+      setText("");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // UPDATE
-  function toggleTodo(id) {
-    setTodos(
-      todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
-    );
+  async function toggleTodo(todo) {
+    // setTodos(
+    //   todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    // );
+    //  // UPDATE
+
+    try {
+      const updated = await updateTodo(todo.id, {
+        completed: !todo.completed,
+      });
+      setTodos(todos.map((t) => (t.id === todo.id ? updated : t)));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  function deleteTodo(id) {
-    // "Make a new list with everyone except the todo with this id,
-    //  and use it as the new todos"
-    setTodos(todos.filter((t) => t.id !== id));
+  async function removeTodo(id) {
+    // // "Make a new list with everyone except the todo with this id,
+    // //  and use it as the new todos"
+    // setTodos(todos.filter((t) => t.id !== id));
+
+    try {
+      await deleteTodo(id); // now this is the imported API function
+      setTodos(todos.filter((t) => t.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -74,13 +100,13 @@ function Todo() {
           <button
             type="button"
             className="border p-2 cursor-pointer active:shadow-[0_0_10px_rgba(255,255,255,0.9)]"
-            onClick={() => deleteTodo(todo.id)}
+            onClick={() => removeTodo(todo.id)}
           >
             <span>❌</span>
           </button>
           <button
             type="button"
-            onClick={() => toggleTodo(todo.id)}
+            onClick={() => toggleTodo(todo)}
             className="border p-2 cursor-pointer active:shadow-[0_0_10px_rgba(255,255,255,0.9)]"
           >
             ✔
