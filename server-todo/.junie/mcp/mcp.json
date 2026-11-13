@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/prajwal/.config/herd-lite/bin/php",
+            "args": [
+                "/Users/prajwal/Desktop/projects/todoinlaravel/server-todo/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
